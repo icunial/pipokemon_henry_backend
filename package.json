@@ -15,5 +15,15 @@
   "bugs": {
     "url": "https://github.com/icunial/pipokemon_henry_backend/issues"
   },
-  "homepage": "https://github.com/icunial/pipokemon_henry_backend#readme"
+  "homepage": "https://github.com/icunial/pipokemon_henry_backend#readme",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "dotenv": "^16.3.1",
+    "pg": "^8.11.3",
+    "sequelize": "^6.32.1",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
 }
