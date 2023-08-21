@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 5000;
+const db = require("./src/db");
 
 // Body-Parser middleware
 app.use(express.json());
@@ -28,6 +29,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}...`);
+// Initialize Express Server / Database Sync
+db.sync({}).then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}...`);
+  });
 });
