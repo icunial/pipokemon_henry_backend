@@ -1,3 +1,8 @@
+GET https://pokeapi.co/api/v2/pokemon
+GET https://pokeapi.co/api/v2/pokemon/{id}
+GET https://pokeapi.co/api/v2/pokemon/{name}
+GET https://pokeapi.co/api/v2/type
+
 **Ruta principal**: debe contener
 
 - [ ] Input de búsqueda para encontrar pokemons por nombre (La búsqueda será exacta, es decir solo encontrará al pokemon si se coloca el nombre completo)
