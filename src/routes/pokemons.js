@@ -1,10 +1,13 @@
 const express = require("express");
 const router = express.Router();
 
+const pokemonsController = require("../controllers/pokemons");
+
 // Get all pokemons
 router.get("/", async (req, res, next) => {
   try {
     const apiResults = await pokemonsController.getAllApi();
+
     return res.status(200).json({
       statusCode: 200,
       data: apiResults,
