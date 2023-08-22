@@ -59,7 +59,37 @@ const findPokemonByIdApi = async (id) => {
   }
 };
 
+// Get Pokemon by its NAME from API
+const findByNameApi = async (name) => {
+  const result = [];
+
+  try {
+    const apiResults = await axios.get(
+      `https://pokeapi.co/api/v2/pokemon/${name}`
+    );
+    if (apiResults) {
+      result.push({
+        id: apiResults.data.id,
+        name: apiResults.data.name,
+        image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${apiResults.data.id}.png`,
+        types: apiResults.data.types.map((t) => t.type.name.toUpperCase()),
+        height: apiResults.data.height,
+        weight: apiResults.data.weight,
+        life: apiResults.data.stats[0].base_stat,
+        attack: apiResults.data.stats[1].base_stat,
+        defense: apiResults.data.stats[2].base_stat,
+        speed: apiResults.data.stats[5].base_stat,
+      });
+    }
+    return result;
+  } catch (error) {
+    if (error.response.status === 404) return result;
+    throw new Error("Error trying to get a dog by its name from API");
+  }
+};
+
 module.exports = {
   getAllApi,
   findPokemonByIdApi,
+  findByNameApi,
 };
