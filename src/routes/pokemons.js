@@ -28,7 +28,24 @@ router.get("/:id", async (req, res, next) => {
 
 // Get all pokemons
 router.get("/", async (req, res, next) => {
+  const { name } = req.query;
+
   try {
+    if (name) {
+      const apiResults = await pokemonsController.findByNameApi(name);
+
+      if (!apiResults.length) {
+        return res.status(404).json({
+          statusCode: 404,
+          msg: `Pokemon with name ${name} not found!`,
+        });
+      }
+      return res.status(200).json({
+        statusCode: 200,
+        data: apiResults,
+      });
+    }
+
     const apiResults = await pokemonsController.getAllApi();
 
     return res.status(200).json({

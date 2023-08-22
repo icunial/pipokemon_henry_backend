@@ -30,7 +30,7 @@ const getAllApi = async () => {
   }
 };
 
-// Get Pokemon by its ID API
+// Get Pokemon by its ID from API
 const findPokemonByIdApi = async (id) => {
   const result = [];
 
