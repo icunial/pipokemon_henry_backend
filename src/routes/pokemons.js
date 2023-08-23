@@ -131,4 +131,30 @@ router.get("/filter/weight/:opt", async (req, res, next) => {
   }
 });
 
+// Order life routes
+router.get("/filter/life/:opt", async (req, res, next) => {
+  try {
+    const { opt } = req.params;
+
+    let results = [];
+
+    if (opt === "more") {
+      results = await pokemonsController.orderPokemonsMoreLife();
+    } else if (opt === "less") {
+      results = await pokemonsController.orderPokemonsLessLife();
+    } else {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: `No filter available`,
+      });
+    }
+    res.status(200).json({
+      statusCode: 200,
+      data: results,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = router;
