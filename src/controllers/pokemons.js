@@ -212,6 +212,92 @@ const orderPokemonsLessHeight = async () => {
   }
 };
 
+// Get Pokemons ordered by their weight from more to less
+const orderPokemonsMoreWeight = async () => {
+  const results = [];
+  try {
+    const apiResults = await axios.get(
+      "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20"
+    );
+    if (apiResults) {
+      apiResults.data.results.forEach((r, index) => {
+        results.push({
+          id: index + 1,
+          name: r.name,
+          image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+            index + 1
+          }.png`,
+        });
+      });
+    }
+    for (result of results) {
+      const pokemonFound = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon/${result.id}`
+      );
+      result.types = pokemonFound.data.types.map((t) =>
+        t.type.name.toUpperCase()
+      );
+      result.height = pokemonFound.data.height;
+      result.weight = pokemonFound.data.weight;
+      result.life = pokemonFound.data.stats[0].base_stat;
+      result.attack = pokemonFound.data.stats[1].base_stat;
+      result.defense = pokemonFound.data.stats[2].base_stat;
+      result.speed = pokemonFound.data.stats[5].base_stat;
+    }
+
+    return results.sort((a, b) => {
+      if (a.weight < b.weight) return 1;
+      if (a.weight > b.weight) return -1;
+      return 0;
+    });
+  } catch (error) {
+    throw new Error("Error trying to order pokemons from More Height to Less");
+  }
+};
+
+// Get Pokemons ordered by their weight from less to more
+const orderPokemonsLessWeight = async () => {
+  const results = [];
+  try {
+    const apiResults = await axios.get(
+      "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20"
+    );
+    if (apiResults) {
+      apiResults.data.results.forEach((r, index) => {
+        results.push({
+          id: index + 1,
+          name: r.name,
+          image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+            index + 1
+          }.png`,
+        });
+      });
+    }
+    for (result of results) {
+      const pokemonFound = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon/${result.id}`
+      );
+      result.types = pokemonFound.data.types.map((t) =>
+        t.type.name.toUpperCase()
+      );
+      result.height = pokemonFound.data.height;
+      result.weight = pokemonFound.data.weight;
+      result.life = pokemonFound.data.stats[0].base_stat;
+      result.attack = pokemonFound.data.stats[1].base_stat;
+      result.defense = pokemonFound.data.stats[2].base_stat;
+      result.speed = pokemonFound.data.stats[5].base_stat;
+    }
+
+    return results.sort((a, b) => {
+      if (a.weight > b.weight) return 1;
+      if (a.weight < b.weight) return -1;
+      return 0;
+    });
+  } catch (error) {
+    throw new Error("Error trying to order pokemons from More Height to Less");
+  }
+};
+
 module.exports = {
   getAllApi,
   findPokemonByIdApi,
@@ -219,4 +305,6 @@ module.exports = {
   findByTypeApi,
   orderPokemonsMoreHeight,
   orderPokemonsLessHeight,
+  orderPokemonsMoreWeight,
+  orderPokemonsLessWeight,
 };
