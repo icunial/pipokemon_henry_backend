@@ -157,4 +157,30 @@ router.get("/filter/life/:opt", async (req, res, next) => {
   }
 });
 
+// Order attack routes
+router.get("/filter/attack/:opt", async (req, res, next) => {
+  try {
+    const { opt } = req.params;
+
+    let results = [];
+
+    if (opt === "more") {
+      results = await pokemonsController.orderPokemonsMoreAttack();
+    } else if (opt === "less") {
+      results = await pokemonsController.orderPokemonsLessAttack();
+    } else {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: `No filter available`,
+      });
+    }
+    res.status(200).json({
+      statusCode: 200,
+      data: results,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = router;
