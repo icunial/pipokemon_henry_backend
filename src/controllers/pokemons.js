@@ -90,8 +90,45 @@ const findByNameApi = async (name) => {
   }
 };
 
+// Get Pokemons by their type from API
+const findByTypeApi = async (type) => {
+  let results = [];
+  try {
+    const apiResults = await axios.get(
+      "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=200"
+    );
+    if (apiResults) {
+      apiResults.data.results.forEach((r, index) => {
+        results.push({
+          id: index + 1,
+          name: r.name,
+          image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+            index + 1
+          }.png`,
+        });
+      });
+    }
+    for (result of results) {
+      const pokemonFound = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon/${result.id}`
+      );
+      result.types = pokemonFound.data.types.map((t) =>
+        t.type.name.toUpperCase()
+      );
+    }
+    results = results.filter((r) => {
+      return r.types.includes(type.toUpperCase());
+    });
+    return results;
+  } catch (error) {
+    console.log(error.message);
+    throw new Error("Error trying to get all pokemons by their type from API");
+  }
+};
+
 module.exports = {
   getAllApi,
   findPokemonByIdApi,
   findByNameApi,
+  findByTypeApi,
 };
