@@ -96,6 +96,10 @@ router.get("/filter/height/:opt", async (req, res, next) => {
         msg: `No filter available`,
       });
     }
+    res.status(200).json({
+      statusCode: 200,
+      data: results,
+    });
   } catch (error) {
     return next(error);
   }
