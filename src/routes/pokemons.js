@@ -79,4 +79,26 @@ router.get("/types/:type", async (req, res, next) => {
   }
 });
 
+// Order height routes
+router.get("/filter/height/:opt", async (req, res, next) => {
+  try {
+    const { opt } = req.params;
+
+    let results = [];
+
+    if (opt === "more") {
+      results = await pokemonsController.orderPokemonsMoreHeight();
+    } else if (opt === "less") {
+      results = await pokemonsController.orderPokemonsLessHeight();
+    } else {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: `No filter available`,
+      });
+    }
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = router;
