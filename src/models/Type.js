@@ -13,3 +13,5 @@ const Type = db.define(
     timestamps: false,
   }
 );
+
+module.exports = Type;
