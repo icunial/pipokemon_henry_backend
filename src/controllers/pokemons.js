@@ -4,7 +4,9 @@ const axios = require("axios");
 const getAllApi = async () => {
   const results = [];
   try {
-    const apiResults = await axios.get("https://pokeapi.co/api/v2/pokemon");
+    const apiResults = await axios.get(
+      "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=200"
+    );
     if (apiResults) {
       apiResults.data.results.forEach((r, index) => {
         results.push({

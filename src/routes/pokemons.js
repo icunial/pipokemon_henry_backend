@@ -57,4 +57,26 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+// Get pokemons by their type
+router.get("/types/:type", async (req, res, next) => {
+  const { type } = req.params;
+  try {
+    if (type) {
+      const apiResults = await pokemonsController.findByTypeApi(type);
+      if (!apiResults.length) {
+        return res.status(404).json({
+          statusCode: 404,
+          msg: `Pokemons of type ${type} not found!`,
+        });
+      }
+      return res.status(200).json({
+        statusCode: 200,
+        data: apiResults,
+      });
+    }
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = router;
