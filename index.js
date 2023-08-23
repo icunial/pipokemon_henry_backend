@@ -24,6 +24,14 @@ app.use((req, res, next) => {
 // Set Router
 app.use("/", router);
 
+// Instantiated Models
+const Pokemon = require("./src/models/Pokemon");
+const Type = require("./src/models/Type");
+
+// Models associations
+Pokemon.belongsToMany(Type, { through: "PokemonsTypes" });
+Type.belongsToMany(Pokemon, { through: "PokemonsTypes" });
+
 // Error catching endware
 app.use((err, req, res, next) => {
   const status = err.status || 500;
