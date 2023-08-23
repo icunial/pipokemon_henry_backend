@@ -3,23 +3,7 @@ GET https://pokeapi.co/api/v2/pokemon/{id}
 GET https://pokeapi.co/api/v2/pokemon/{name}
 GET https://pokeapi.co/api/v2/type
 
-**Ruta principal**: debe contener
-
-- [ ] Input de búsqueda para encontrar pokemons por nombre (La búsqueda será exacta, es decir solo encontrará al pokemon si se coloca el nombre completo)
-- [ ] Área donde se verá el listado de pokemons. Al iniciar deberá cargar los primeros resultados obtenidos desde la ruta `GET /pokemons` y deberá mostrar su:
-  - Imagen
-  - Nombre
-  - Tipos (Electrico, Fuego, Agua, etc)
-- [ ] Botones/Opciones para filtrar por tipo de pokemon y por pokemon existente o creado por nosotros
-- [ ] Botones/Opciones para ordenar tanto ascendentemente como descendentemente los pokemons por orden alfabético y por ataque
 - [ ] Paginado para ir buscando y mostrando los siguientes pokemons, 12 pokemons por pagina.
-
-**Ruta de detalle de Pokemon**: debe contener
-
-- [ ] Los campos mostrados en la ruta principal para cada pokemon (imagen, nombre y tipos)
-- [ ] Número de Pokemon (id)
-- [ ] Estadísticas (vida, ataque, defensa, velocidad)
-- [ ] Altura y peso
 
 ## Base de datos
 
