@@ -47,10 +47,11 @@ router.get("/", async (req, res, next) => {
     }
 
     const apiResults = await pokemonsController.getAllApi();
+    const dbResults = await pokemonsController.getAllDb();
 
     return res.status(200).json({
       statusCode: 200,
-      data: apiResults,
+      data: dbResults.concat(apiResults),
     });
   } catch (error) {
     return next(error);
