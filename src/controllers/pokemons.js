@@ -1,6 +1,9 @@
 const axios = require("axios");
+const Pokemon = require("../models/Pokemon");
+const Type = require("../models/Type");
+const { Op } = require("sequelize");
 
-// Get All Dogs from API
+// Get All Pokemons from API
 const getAllApi = async () => {
   const results = [];
   try {
@@ -29,6 +32,28 @@ const getAllApi = async () => {
     return results;
   } catch (error) {
     throw new Error("Error trying to get all pokemons from API");
+  }
+};
+
+// Get All Pokemons from DB
+const getAllDb = async () => {
+  const results = [];
+  try {
+    const dbResults = await Pokemon.findAll({
+      attributes: ["id", "name", "image"],
+      include: Type,
+    });
+    dbResults.forEach((r) => {
+      results.push({
+        id: r.id,
+        name: r.name,
+        image: r.image,
+        type: r.types.map((t) => t.name),
+      });
+    });
+    return results;
+  } catch (error) {
+    throw new Error("Error trying to get all pokemons from DB");
   }
 };
 
@@ -472,6 +497,7 @@ const orderPokemonsLessAttack = async () => {
 
 module.exports = {
   getAllApi,
+  getAllDb,
   findPokemonByIdApi,
   findByNameApi,
   findByTypeApi,
