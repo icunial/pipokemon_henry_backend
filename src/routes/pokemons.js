@@ -33,8 +33,11 @@ router.get("/", async (req, res, next) => {
   try {
     if (name) {
       const apiResults = await pokemonsController.findByNameApi(name);
+      const dbResults = await pokemonsController.findByNameDb(name);
 
-      if (!apiResults.length) {
+      const results = dbResults.concat(apiResults);
+
+      if (!results.length) {
         return res.status(404).json({
           statusCode: 404,
           msg: `Pokemon with name ${name} not found!`,
@@ -42,7 +45,7 @@ router.get("/", async (req, res, next) => {
       }
       return res.status(200).json({
         statusCode: 200,
-        data: apiResults,
+        data: results,
       });
     }
 
