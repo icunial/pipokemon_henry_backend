@@ -585,6 +585,18 @@ const orderPokemonsLessAttack = async () => {
   }
 };
 
+// Delete a pokemon from DB by its ID
+const deletePokemonFromDbById = async (id) => {
+  try {
+    const pokemonDeleted = await Pokemon.destroy({
+      where: { id },
+    });
+    return pokemonDeleted;
+  } catch (error) {
+    throw new Error("Error deleting a pokemon by its ID from DB");
+  }
+};
+
 module.exports = {
   getAllApi,
   getAllDb,
@@ -602,4 +614,5 @@ module.exports = {
   orderPokemonsLessLife,
   orderPokemonsMoreAttack,
   orderPokemonsLessAttack,
+  deletePokemonFromDbById,
 };
