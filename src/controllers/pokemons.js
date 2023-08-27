@@ -597,6 +597,25 @@ const deletePokemonFromDbById = async (id) => {
   }
 };
 
+// Update a pokemon from DB
+const updatePokemonFromDb = async (id, data) => {
+  try {
+    const pokemonUpdated = await Pokemon.update(
+      {
+        ...data,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+    return pokemonUpdated;
+  } catch (error) {
+    throw new Error("Error updating a pokemon!");
+  }
+};
+
 module.exports = {
   getAllApi,
   getAllDb,
@@ -615,4 +634,5 @@ module.exports = {
   orderPokemonsMoreAttack,
   orderPokemonsLessAttack,
   deletePokemonFromDbById,
+  updatePokemonFromDb,
 };
