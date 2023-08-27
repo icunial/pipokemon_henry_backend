@@ -260,4 +260,19 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+// DELETE a pokemon from DB
+router.delete("/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pokemonsController.deletePokemonFromDbById(id);
+    res.status(200).json({
+      statusCode: 200,
+      data: result,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = router;
