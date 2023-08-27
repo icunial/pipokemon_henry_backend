@@ -471,8 +471,9 @@ const orderPokemonsLessLife = async () => {
 
 // Get Pokemons ordered by their attack from more to less
 const orderPokemonsMoreAttack = async () => {
-  const results = [];
+  let results = [];
   try {
+    const dbResults = await utils.getFullAllDb();
     const apiResults = await axios.get(
       "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20"
     );
@@ -502,6 +503,7 @@ const orderPokemonsMoreAttack = async () => {
       result.speed = pokemonFound.data.stats[5].base_stat;
     }
 
+    results = [...dbResults, ...results];
     return results.sort((a, b) => {
       if (a.attack < b.attack) return 1;
       if (a.attack > b.attack) return -1;
