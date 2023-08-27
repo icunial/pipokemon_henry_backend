@@ -2,6 +2,7 @@ const axios = require("axios");
 const Pokemon = require("../models/Pokemon");
 const Type = require("../models/Type");
 const { Op } = require("sequelize");
+const utils = require("../utils/index");
 
 // Get All Pokemons from API
 const getAllApi = async () => {
@@ -206,8 +207,9 @@ const findByTypeApi = async (type) => {
 
 // Get Pokemons ordered by their height from more to less
 const orderPokemonsMoreHeight = async () => {
-  const results = [];
+  let results = [];
   try {
+    const dbResults = await utils.getFullAllDb();
     const apiResults = await axios.get(
       "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20"
     );
@@ -236,7 +238,7 @@ const orderPokemonsMoreHeight = async () => {
       result.defense = pokemonFound.data.stats[2].base_stat;
       result.speed = pokemonFound.data.stats[5].base_stat;
     }
-
+    results = [...dbResults, ...results];
     return results.sort((a, b) => {
       if (a.height < b.height) return 1;
       if (a.height > b.height) return -1;
