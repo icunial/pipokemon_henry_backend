@@ -115,6 +115,33 @@ const findByNameApi = async (name) => {
   }
 };
 
+// Get Pokemon by its NAME from DB
+const findByNameDb = async (name) => {
+  const results = [];
+  try {
+    const dbResults = await Pokemon.findAll({
+      attributes: ["id", "name", "image"],
+      include: Type,
+      where: {
+        name: {
+          [Op.iLike]: `%${name}%`,
+        },
+      },
+    });
+    dbResults.forEach((r) => {
+      results.push({
+        id: r.id,
+        name: r.name,
+        image: r.image,
+        type: r.types.map((t) => t.name),
+      });
+    });
+    return results;
+  } catch (error) {
+    throw new Error("Error trying to get a pokemon ");
+  }
+};
+
 // Get Pokemons by their type from API
 const findByTypeApi = async (type) => {
   let results = [];
@@ -500,6 +527,7 @@ module.exports = {
   getAllDb,
   findPokemonByIdApi,
   findByNameApi,
+  findByNameDb,
   findByTypeApi,
   orderPokemonsMoreHeight,
   orderPokemonsLessHeight,
