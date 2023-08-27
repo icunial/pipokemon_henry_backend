@@ -1,7 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
+const Pokemon = require("../models/Pokemon");
+const Type = require("../models/Type");
+
 const pokemonsController = require("../controllers/pokemons");
+
+const uuid = require("uuid");
 
 // Get pokemon by its id
 router.get("/:id", async (req, res, next) => {
@@ -226,6 +231,32 @@ router.get("/from/:from", async (req, res, next) => {
     }
   } catch (error) {
     return next(error);
+  }
+});
+
+// POST a new pokemon
+router.post("/", async (req, res, next) => {
+  const pokemon = req.body;
+
+  try {
+    const pokemonCreated = await Pokemon.create({
+      ...dog,
+      id: uuid.v4(),
+    });
+
+    pokemon.types.forEach(async (type) => {
+      const typeFound = await Type.findOne({
+        where: { name: type },
+      });
+      typeFound.addPokemon(pokemonCreated.id);
+    });
+
+    res.status(201).json({
+      statusCode: 201,
+      data: pokemonCreated,
+    });
+  } catch (error) {
+    return next(new Error("Error trying to create a new pokemon!"));
   }
 });
 
