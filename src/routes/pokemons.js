@@ -9,7 +9,11 @@ router.get("/:id", async (req, res, next) => {
   let result = [];
 
   try {
-    result = await pokemonsController.findPokemonByIdApi(id);
+    if (id.includes("-")) {
+      result = await pokemonsController.findPokemonByIdDb(id);
+    } else {
+      result = await pokemonsController.findPokemonByIdApi(id);
+    }
 
     if (!result.length)
       return res.status(404).json({
