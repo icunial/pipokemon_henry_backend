@@ -86,6 +86,32 @@ const findPokemonByIdApi = async (id) => {
   }
 };
 
+// Get Pokemons by its ID from DB
+const findPokemonByIdDb = async (id) => {
+  try {
+    const dbResult = await Pokemon.findByPk(id, {
+      include: Type,
+    });
+    const result = [
+      {
+        id: dbResult.id,
+        name: dbResult.name,
+        image: dbResult.image,
+        height: dbResult.height,
+        weight: dbResult.weight,
+        life: dbResult.life,
+        attack: dbResult.attack,
+        defense: dbResult.defense,
+        speed: dbResult.speed,
+        type: dbResult.types.map((t) => t.name),
+      },
+    ];
+    return result;
+  } catch (error) {
+    throw new Error("Error trying to get a pokemon by its ID from DB");
+  }
+};
+
 // Get Pokemon by its NAME from API
 const findByNameApi = async (name) => {
   const result = [];
@@ -526,6 +552,7 @@ module.exports = {
   getAllApi,
   getAllDb,
   findPokemonByIdApi,
+  findPokemonByIdDb,
   findByNameApi,
   findByNameDb,
   findByTypeApi,
