@@ -251,8 +251,9 @@ const orderPokemonsMoreHeight = async () => {
 
 // Get Pokemons ordered by their height from less to more
 const orderPokemonsLessHeight = async () => {
-  const results = [];
+  let results = [];
   try {
+    const dbResults = await utils.getFullAllDb();
     const apiResults = await axios.get(
       "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20"
     );
@@ -281,7 +282,7 @@ const orderPokemonsLessHeight = async () => {
       result.defense = pokemonFound.data.stats[2].base_stat;
       result.speed = pokemonFound.data.stats[5].base_stat;
     }
-
+    results = [...dbResults, ...results];
     return results.sort((a, b) => {
       if (a.height > b.height) return 1;
       if (a.height < b.height) return -1;
