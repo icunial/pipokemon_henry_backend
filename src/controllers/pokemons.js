@@ -205,6 +205,32 @@ const findByTypeApi = async (type) => {
   }
 };
 
+// Get Pokemons by their type from DB
+const findByTypeDb = async (type) => {
+  const results = [];
+  try {
+    const dbResults = await Pokemon.findAll({
+      attributes: ["id", "name", "image"],
+      include: Type,
+    });
+    dbResults.forEach((r) => {
+      results.push({
+        id: r.id,
+        name: r.name,
+        image: r.image,
+        type: r.types.map((t) => t.name),
+      });
+    });
+    results = results.filter((r) => {
+      return r.types.includes(type);
+    });
+
+    return results;
+  } catch (error) {
+    throw new Error("Error trying to get pokemons by their type from DB");
+  }
+};
+
 // Get Pokemons ordered by their height from more to less
 const orderPokemonsMoreHeight = async () => {
   let results = [];
@@ -567,6 +593,7 @@ module.exports = {
   findByNameApi,
   findByNameDb,
   findByTypeApi,
+  findByTypeDb,
   orderPokemonsMoreHeight,
   orderPokemonsLessHeight,
   orderPokemonsMoreWeight,

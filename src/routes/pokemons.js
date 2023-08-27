@@ -71,7 +71,10 @@ router.get("/types/:type", async (req, res, next) => {
   try {
     if (type) {
       const apiResults = await pokemonsController.findByTypeApi(type);
-      if (!apiResults.length) {
+      const dbResults = await pokemonsController.findByTypeDb(type);
+
+      const results = dbResults.concat(apiResults);
+      if (!results.length) {
         return res.status(404).json({
           statusCode: 404,
           msg: `Pokemons of type ${type} not found!`,
@@ -79,7 +82,7 @@ router.get("/types/:type", async (req, res, next) => {
       }
       return res.status(200).json({
         statusCode: 200,
-        data: apiResults,
+        data: results,
       });
     }
   } catch (error) {
