@@ -195,6 +195,19 @@ router.get("/filter/attack/:opt", async (req, res, next) => {
 router.get("/from/:from", async (req, res, next) => {
   const { from } = req.params;
   try {
+    if (from === "db") {
+      const dbResults = await pokemonsController.getAllDb();
+      if (!dbResults.length) {
+        return res.status(404).json({
+          statusCode: 404,
+          msg: `There are not pokemons saved in the DB!`,
+        });
+      }
+      return res.status(200).json({
+        statusCode: 200,
+        data: dbResults,
+      });
+    }
     if (from === "api") {
       const apiResults = await pokemonsController.getAllApi();
       if (!apiResults.length) {
