@@ -8,6 +8,8 @@ const pokemonsController = require("../controllers/pokemons");
 
 const uuid = require("uuid");
 
+const validations = require("../utils/validations");
+
 // Get pokemon by its id
 router.get("/:id", async (req, res, next) => {
   const id = req.params.id;
@@ -237,6 +239,57 @@ router.get("/from/:from", async (req, res, next) => {
 // POST a new pokemon
 router.post("/", async (req, res, next) => {
   const pokemon = req.body;
+
+  // Validations body properties
+
+  if (validations.validateName(pokemon.name)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validateName(pokemon.name),
+    });
+  }
+
+  if (validations.validateHeight(pokemon.height)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validateHeight(pokemon.height),
+    });
+  }
+
+  if (validations.validateWeight(pokemon.weight)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validateWeight(pokemon.weight),
+    });
+  }
+
+  if (validations.validateLife(pokemon.life)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validateLife(pokemon.life),
+    });
+  }
+
+  if (validations.validateAttack(pokemon.attack)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validateAttack(pokemon.attack),
+    });
+  }
+
+  if (validations.validateDefense(pokemon.defense)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validateDefense(pokemon.defense),
+    });
+  }
+
+  if (validations.validateSpeed(pokemon.speed)) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: validations.validateSpeed(pokemon.speed),
+    });
+  }
 
   try {
     const pokemonCreated = await Pokemon.create({
