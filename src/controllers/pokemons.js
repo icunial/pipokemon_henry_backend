@@ -4,13 +4,13 @@ const Type = require("../models/Type");
 const { Op } = require("sequelize");
 const utils = require("../utils/index");
 
+const pokemonApi_url = "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1281";
+
 // Get All Pokemons from API
 const getAllApi = async () => {
   const results = [];
   try {
-    const apiResults = await axios.get(
-      "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=200"
-    );
+    const apiResults = await axios.get(pokemonApi_url);
     if (apiResults) {
       apiResults.data.results.forEach((r, index) => {
         results.push({
@@ -22,14 +22,14 @@ const getAllApi = async () => {
         });
       });
     }
-    for (result of results) {
+    /*  for (result of results) {
       const pokemonFound = await axios.get(
         `https://pokeapi.co/api/v2/pokemon/${result.id}`
       );
       result.types = pokemonFound.data.types.map((t) =>
         t.type.name.toUpperCase()
       );
-    }
+    } */
     return results;
   } catch (error) {
     throw new Error("Error trying to get all pokemons from API");
