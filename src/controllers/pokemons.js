@@ -4,7 +4,7 @@ const Type = require("../models/Type");
 const { Op } = require("sequelize");
 const utils = require("../utils/index");
 
-const pokemonApi_url = "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1281";
+const pokemonApi_url = "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1008";
 
 // Get All Pokemons from API
 const getAllApi = async () => {
@@ -22,14 +22,7 @@ const getAllApi = async () => {
         });
       });
     }
-    /*  for (result of results) {
-      const pokemonFound = await axios.get(
-        `https://pokeapi.co/api/v2/pokemon/${result.id}`
-      );
-      result.types = pokemonFound.data.types.map((t) =>
-        t.type.name.toUpperCase()
-      );
-    } */
+
     return results;
   } catch (error) {
     throw new Error("Error trying to get all pokemons from API");
@@ -617,8 +610,25 @@ const updatePokemonFromDb = async (id, data) => {
 };
 
 // Get pokemons pagination
-const getPokemonsPagination = (pokemons, page) => {
-  return pokemons.slice(page * 12 - 12, page * 12);
+const getPokemonsPagination = async (pokemons, page) => {
+  let results = pokemons.slice(page * 12 - 12, page * 12);
+
+  for (result of results) {
+    if (typeof result.id === "number") {
+      try {
+        const pokemonFound = await axios.get(
+          `https://pokeapi.co/api/v2/pokemon/${result.id}`
+        );
+        result.types = pokemonFound.data.types.map((t) =>
+          t.type.name.toUpperCase()
+        );
+      } catch (error) {
+        throw new Error("Error trying to get pokemons results paginated");
+      }
+    }
+  }
+
+  return results;
 };
 
 module.exports = {
