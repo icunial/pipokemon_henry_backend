@@ -62,6 +62,17 @@ router.get("/", async (req, res, next) => {
 
     const apiResults = await pokemonsController.getAllApi();
     const dbResults = await pokemonsController.getAllDb();
+    const results = dbResults.concat(apiResults);
+
+    if (page) {
+      // Validate if its a number
+      if (page !== 0 && !parseInt(page)) {
+        return res.status(400).json({
+          statusCode: 400,
+          msg: `Page param must be a number!`,
+        });
+      }
+    }
 
     return res.status(200).json({
       statusCode: 200,
