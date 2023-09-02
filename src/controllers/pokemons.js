@@ -616,6 +616,11 @@ const updatePokemonFromDb = async (id, data) => {
   }
 };
 
+// Get pokemons pagination
+const getPokemonsPagination = (pokemons, page) => {
+  return pokemons.slice(page * 12 - 12, page * 12);
+};
+
 module.exports = {
   getAllApi,
   getAllDb,
@@ -635,4 +640,5 @@ module.exports = {
   orderPokemonsLessAttack,
   deletePokemonFromDbById,
   updatePokemonFromDb,
+  getPokemonsPagination,
 };
