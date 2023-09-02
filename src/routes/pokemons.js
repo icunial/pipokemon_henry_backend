@@ -39,7 +39,7 @@ router.get("/:id", async (req, res, next) => {
 
 // Get all pokemons
 router.get("/", async (req, res, next) => {
-  const { name } = req.query;
+  const { name, page } = req.query;
 
   try {
     if (name) {
@@ -66,10 +66,20 @@ router.get("/", async (req, res, next) => {
 
     if (page) {
       // Validate if its a number
-      if (page !== 0 && !parseInt(page)) {
+      if (page !== "0" && !parseInt(page)) {
         return res.status(400).json({
           statusCode: 400,
           msg: `Page param must be a number!`,
+        });
+      }
+
+      const totalPages = Math.round(results.length / 12);
+
+      // Validates if pages exists
+      if (parseInt(page) === 0 || parseInt(page) > totalPages) {
+        return res.status(404).json({
+          statusCode: 404,
+          msg: `Page ${page} not found!`,
         });
       }
     }
