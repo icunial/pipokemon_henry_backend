@@ -75,7 +75,7 @@ router.get("/", async (req, res, next) => {
 
       const totalPages = Math.round(results.length / 12);
 
-      // Validates if pages exists
+      // Validates if page exists
       if (parseInt(page) === 0 || parseInt(page) > totalPages) {
         return res.status(404).json({
           statusCode: 404,
@@ -86,7 +86,13 @@ router.get("/", async (req, res, next) => {
 
     return res.status(200).json({
       statusCode: 200,
-      data: dbResults.concat(apiResults),
+      totalResults: results.length,
+      totalPages: Math.round(results.length / 12),
+      page: parseInt(page) || 1,
+      data: await pokemonsController.getPokemonsPagination(
+        results,
+        parseInt(page) || 1
+      ),
     });
   } catch (error) {
     return next(error);
