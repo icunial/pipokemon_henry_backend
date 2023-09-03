@@ -370,6 +370,14 @@ router.put("/:id", async (req, res, next) => {
 
   try {
     const result = await pokemonsController.updatePokemonFromDb(id, body);
+
+    if (!result.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        msg: `Pokemon with ID: ${id} not found!`,
+      });
+    }
+
     res.status(200).json({
       statusCode: 200,
       data: result,
