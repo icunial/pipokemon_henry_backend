@@ -610,7 +610,13 @@ const updatePokemonFromDb = async (id, data) => {
         },
       }
     );
-    return pokemonUpdated;
+
+    if (pokemonUpdated) {
+      const pokemonFound = await findPokemonByIdDb(id);
+      return pokemonFound;
+    } else {
+      return [];
+    }
   } catch (error) {
     throw new Error("Error updating a pokemon!");
   }
