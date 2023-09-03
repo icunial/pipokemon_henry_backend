@@ -580,11 +580,18 @@ const orderPokemonsLessAttack = async () => {
 
 // Delete a pokemon from DB by its ID
 const deletePokemonFromDbById = async (id) => {
+  let result = [];
   try {
-    const pokemonDeleted = await Pokemon.destroy({
-      where: { id },
-    });
-    return pokemonDeleted;
+    result = await findPokemonByIdDb(id);
+    if (result.length === 1) {
+      const pokemonDeleted = await Pokemon.destroy({
+        where: { id },
+      });
+      if (pokemonDeleted) {
+        return result;
+      }
+    }
+    return result;
   } catch (error) {
     throw new Error("Error deleting a pokemon by its ID from DB");
   }
